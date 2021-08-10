@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { memo, Suspense } from 'react'
+import { renderRoutes } from 'react-router-config'
+import { HashRouter } from 'react-router-dom'
+import { Spin, BackTop } from 'antd'
 
-function App() {
+import TYHeader from '../src/components/Header'
+import TYFooter from '../src/components/Footer'
+
+import routes from '../src/router'
+
+export default memo(function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <HashRouter>
+        <TYHeader />
+        <Suspense
+          fallback={
+            <div className="example">
+              <Spin size="large" tip="Loading..." />
+            </div>
+          }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+          {renderRoutes(routes)}
+        </Suspense>
+        <TYFooter />
+        {/* <TYAppPlayBar /> */}
+        <BackTop />
+      </HashRouter>
+  )
+})
