@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-18 15:41:47
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-10 09:27:16
+ * @Last Modified time: 2021-08-10 17:18:30
  * 头部组件
  */
 import React, { memo } from 'react'
@@ -11,11 +11,11 @@ import classnames from 'classnames'
 import { Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
-import { headerLinks } from '@/common/local-data'
+import { headerLinks, IDataLink } from '../../common/local-data'
 import { HeaderWrapper, HeaderLeft, HeaderRight } from './style'
 
 export default memo(function TYHeader() {
-  const showItem = (item, index) => {
+  const showItem = (item: IDataLink, index: number) => {
     if (index < 3) {
       return (
         <NavLink to={item.link}>

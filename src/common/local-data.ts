@@ -1,4 +1,4 @@
-interface IDataLink {
+export interface IDataLink {
   title?: string,
   link: string
 }

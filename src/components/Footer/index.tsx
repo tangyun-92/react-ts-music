@@ -2,13 +2,13 @@
  * @Author: 唐云
  * @Date: 2021-02-18 15:41:14
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-10 09:26:55
+ * @Last Modified time: 2021-08-10 17:19:01
  * 底部组件
  */
 import React, { memo, Fragment } from 'react'
 
 import { FooterWrapper, FooterLeft, FooterRight } from './style'
-import { footerLinks, footerImages } from '@/common/local-data'
+import { footerLinks, footerImages, IDataLink } from '../../common/local-data'
 
 export default memo(function TYFooter() {
   return (
@@ -16,7 +16,7 @@ export default memo(function TYFooter() {
       <div className="content wrap-v2">
         <FooterLeft>
           <div className="footer-item">
-            {footerLinks.map((item, index) => {
+            {footerLinks.map((item: IDataLink) => {
               return (
                 <Fragment key={item.title}>
                   <a href={item.link} target="_blank" rel="noreferrer">
@@ -42,7 +42,7 @@ export default memo(function TYFooter() {
           </ul>
         </FooterLeft>
         <FooterRight>
-          {footerImages.map((item, index) => {
+          {footerImages.map((item: IDataLink) => {
             return (
               <li className="item" key={item.link}>
                 <a

@@ -3,8 +3,8 @@ import { renderRoutes } from 'react-router-config'
 import { HashRouter } from 'react-router-dom'
 import { Spin, BackTop } from 'antd'
 
-import TYHeader from '../src/components/Header'
-import TYFooter from '../src/components/Footer'
+import TYHeader from '../src/components/Header/index'
+import TYFooter from '../src/components/Footer/index'
 
 import routes from '../src/router'
 
