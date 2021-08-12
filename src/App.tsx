@@ -2,14 +2,17 @@ import React, { memo, Suspense } from 'react'
 import { renderRoutes } from 'react-router-config'
 import { HashRouter } from 'react-router-dom'
 import { Spin, BackTop } from 'antd'
+import { Provider } from 'react-redux'
 
 import TYHeader from '../src/components/Header/index'
 import TYFooter from '../src/components/Footer/index'
 
 import routes from '../src/router'
+import { store } from '../src/store'
 
 export default memo(function App() {
   return (
+    <Provider store={store}>
       <HashRouter>
         <TYHeader />
         <Suspense
@@ -25,5 +28,6 @@ export default memo(function App() {
         {/* <TYAppPlayBar /> */}
         <BackTop />
       </HashRouter>
+    </Provider>
   )
 })
