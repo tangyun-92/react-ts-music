@@ -18,7 +18,7 @@ export function getCount(count: number) {
  * @param {*} imgUrl 图片地址
  * @param {*} size 图片尺寸
  */
-export function getSizeImage(imgUrl: string, size: number) {
+export function getSizeImage(imgUrl: string | undefined, size: number) {
   return `${imgUrl}?param=${size}x${size}`
 }
 

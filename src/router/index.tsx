@@ -7,6 +7,8 @@ const Mine = React.lazy(() => import('../pages/mine'))
 const Player = React.lazy(() => import('../pages/player'))
 const Recommend = React.lazy(() => import('../pages/discover/recommend'))
 const TopList = React.lazy(() => import('../pages/discover/top-list'))
+const DjRadio = React.lazy(() => import('../pages/discover/dj-radio'))
+const Artist = React.lazy(() => import('../pages/discover/artist'))
 
 const routes = [
   {
@@ -30,6 +32,18 @@ const routes = [
       {
         path: '/discover/top-list',
         component: TopList,
+      },
+      {
+        path: '/discover/dj-radio',
+        component: DjRadio,
+      },
+      {
+        path: '/discover/top-list',
+        component: TopList,
+      },
+      {
+        path: '/discover/artist',
+        component: Artist,
       },
     ],
   },

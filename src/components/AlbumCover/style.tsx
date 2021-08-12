@@ -1,16 +1,22 @@
 import styled from 'styled-components'
 
+interface IWrapper {
+  width?: string
+  size?: string
+  bgp?: string
+}
+
 export const AlbumWrapper = styled.div`
   .album-image {
     position: relative;
-    width: ${(props) => props.width};
-    height: ${(props) => props.size};
+    width: ${(props: IWrapper) => props.width};
+    height: ${(props: IWrapper) => props.size};
     overflow: hidden;
     margin-top: 15px;
 
     img {
-      width: ${(props) => props.size};
-      height: ${(props) => props.size};
+      width: ${(props: IWrapper) => props.size};
+      height: ${(props: IWrapper) => props.size};
     }
 
     .cover {
@@ -19,14 +25,14 @@ export const AlbumWrapper = styled.div`
       right: 0;
       top: 0;
       bottom: 0;
-      background-position: 0 ${(props) => props.bgp};
+      background-position: 0 ${(props: IWrapper) => props.bgp};
       text-indent: -9999px;
     }
   }
 
   .album-info {
     font-size: 12px;
-    width: ${(props) => props.size};
+    width: ${(props: IWrapper) => props.size};
     .name {
       color: #000;
     }

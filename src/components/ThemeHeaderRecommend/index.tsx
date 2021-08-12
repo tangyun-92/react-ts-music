@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 15:11:24
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 13:41:46
+ * @Last Modified time: 2021-08-12 14:56:20
  * 推荐页面title组件
  */
 import React, { memo } from 'react'
@@ -11,7 +11,7 @@ import { HeaderWrapper } from './style'
 
 interface IThemeHeaderRecommendProps {
   title: string
-  keywords: string[]
+  keywords?: string[]
 }
 
 const TYThemeHeaderRecommend: React.FC<IThemeHeaderRecommendProps> = (
@@ -27,7 +27,7 @@ const TYThemeHeaderRecommend: React.FC<IThemeHeaderRecommendProps> = (
       <div className="left">
         <h3 className="title">{title}</h3>
         <div className="keyword">
-          {keywords.map((item) => {
+          {keywords && keywords.map((item) => {
             return (
               <div className="item" key={item}>
                 <a href="todo">{item}</a>

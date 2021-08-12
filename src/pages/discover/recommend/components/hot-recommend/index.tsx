@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 15:02:37
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 14:18:17
+ * @Last Modified time: 2021-08-12 14:47:40
  * 推荐-热门推荐组件
  */
 import React, { memo, useEffect } from 'react'
@@ -61,8 +61,8 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => {
   return {
     // 获取推荐列表
-    getRecommendDispatch() {
-      dispatch(actionTypes.getRecommend(8))
+    getRecommendDispatch(limit: number) {
+      dispatch(actionTypes.getRecommend(limit))
     },
   }
 }

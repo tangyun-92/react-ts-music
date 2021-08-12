@@ -2,21 +2,22 @@
  * @Author: 唐云
  * @Date: 2021-02-21 13:49:45
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-11 13:17:53
+ * @Last Modified time: 2021-08-12 15:22:08
  * 榜单组件
  */
 import React, { memo } from 'react'
 
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { TopRankingWrapper } from './style'
-import { getSizeImage } from '@/utils/format-utils'
-// import {
-//   getSongDetailAction,
-//   getSongToPlayListAction,
-// } from '@/pages/player/store/actionCreators'
+import { getSizeImage } from '../../utils/format-utils'
+import { ITopList } from '../../pages/discover/recommend/store/data.d'
 
-export default memo(function TopRanking(props) {
+interface ITopRanking {
+  info: ITopList
+}
+
+const TopRanking: React.FC<ITopRanking> = (props: ITopRanking) => {
   /**
    * state and props
    */
@@ -24,20 +25,15 @@ export default memo(function TopRanking(props) {
   const { tracks = [] } = info
 
   /**
-   * redux hooks
-   */
-  const dispatch = useDispatch()
-
-  /**
    * other methods
    */
   // 播放音乐
-  const playMusic = (item) => {
+  const playMusic = (item: any) => {
     // dispatch(getSongDetailAction(item.id))
   }
 
   // 添加到播放列表
-  const addToPlayList = (item) => {
+  const addToPlayList = (item: any) => {
     // dispatch(getSongToPlayListAction(item.id))
   }
 
@@ -59,7 +55,7 @@ export default memo(function TopRanking(props) {
         </div>
       </div>
       <div className="list">
-        {tracks.slice(0, 10).map((item, index) => {
+        {tracks && tracks.slice(0, 10).map((item, index) => {
           return (
             <div key={item.id} className="list-item">
               <div className="rank">{index + 1}</div>
@@ -86,4 +82,6 @@ export default memo(function TopRanking(props) {
       </div>
     </TopRankingWrapper>
   )
-})
+}
+
+export default connect()(memo(TopRanking))

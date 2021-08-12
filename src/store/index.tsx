@@ -10,7 +10,7 @@ const persistConfig = {
   transforms: [immutableTransform()],
   key: 'root',
   storage,
-  // while: ['user'] 白名单
+  whitelist: ['user'], // 白名单
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -19,12 +19,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 const composeEnhancers = compose
 
 export const store = createStore(
-  // persistedReducer,
-  rootReducer,
+  persistedReducer,
+  // rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 )
 
-// export const persistor = persistStore(store)
+export const persistor = persistStore(store)
 
 // export default store
 

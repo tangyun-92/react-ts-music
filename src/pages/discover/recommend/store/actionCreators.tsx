@@ -22,22 +22,22 @@ const changeRecommendAction = (data: IRecommendStateType) => ({
   data,
 })
 
-const changeNewAlbumAction = (res: any) => ({
+const changeNewAlbumAction = (data: IRecommendStateType) => ({
   type: actionTypes.CHANGE_NEW_ALBUMS,
-  newAlbums: res.albums,
+  data,
 })
 
-const changeUpRankingAction = (res: any) => ({
+const changeUpRankingAction = (data: IRecommendStateType) => ({
   type: actionTypes.CHANGE_UP_RANKING,
-  upRanking: res.playlist,
+  data,
 })
-const changeNewRankingAction = (res: any) => ({
+const changeNewRankingAction = (data: IRecommendStateType) => ({
   type: actionTypes.CHANGE_NEW_RANKING,
-  newRanking: res.playlist,
+  data,
 })
-const changeOriginRankingAction = (res: any) => ({
+const changeOriginRankingAction = (data: IRecommendStateType) => ({
   type: actionTypes.CHANGE_ORIGIN_RANKING,
-  originRanking: res.playlist,
+  data,
 })
 
 export const getTopBanner = () => {
@@ -56,26 +56,26 @@ export const getRecommend = (limit: number) => {
   }
 }
 
-export const getNewAlbum = (limit: any) => {
+export const getNewAlbum = (limit: number) => {
   return (dispatch: any) => {
-    getNewAlbums(limit).then((res) => {
-      dispatch(changeNewAlbumAction(res))
+    getNewAlbums(limit).then((res: any) => {
+      dispatch(changeNewAlbumAction(res.albums))
     })
   }
 }
 
-export const getTopListAction = (idx: any) => {
+export const getTopListAction = (idx: number) => {
   return (dispatch: any) => {
-    getTopList(idx).then((res) => {
+    getTopList(idx).then((res: any) => {
       switch (idx) {
         case 3:
-          dispatch(changeUpRankingAction(res))
+          dispatch(changeUpRankingAction(res.playlist))
           break
         case 0:
-          dispatch(changeNewRankingAction(res))
+          dispatch(changeNewRankingAction(res.playlist))
           break
         case 2:
-          dispatch(changeOriginRankingAction(res))
+          dispatch(changeOriginRankingAction(res.playlist))
           break
         default:
           break

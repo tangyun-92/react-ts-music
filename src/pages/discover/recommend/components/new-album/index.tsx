@@ -6,33 +6,33 @@
  * 推荐-新碟上架组件
  */
 import React, { memo, useEffect, useRef } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { Carousel } from 'antd'
 import { NewAlbumWrapper } from './style'
 import TYThemeHeaderRecommend from '../../../../../components/ThemeHeaderRecommend'
 import AlbumCover from '../../../../../components/AlbumCover'
-import { getNewAlbum } from './../../store/actionCreators'
+import * as actionTypes from '../../store/actionCreators'
+import { INewAlbums } from '../../store/data.d'
 
-export default memo(function TYNewAlbum() {
+interface IRecommendProps {
+  getNewAlbumDispatch: (limit: number) => void
+  newAlbums: INewAlbums[]
+}
+
+const TYNewAlbum: React.FC<IRecommendProps> = (props: IRecommendProps) => {
   /**
    * redux hooks
    */
-  const { newAlbums } = useSelector(
-    (state) => ({
-      newAlbums: state.getIn(['recommend', 'newAlbums']),
-    }),
-    shallowEqual
-  )
-  const dispatch = useDispatch()
-  
+  const { getNewAlbumDispatch, newAlbums } = props
+
   /**
    * other hooks
    */
-  const pageRef = useRef()
+  const pageRef: any = useRef()
   useEffect(() => {
-    dispatch(getNewAlbum(10))
-  }, [dispatch])
+    getNewAlbumDispatch(10)
+  }, [getNewAlbumDispatch])
 
   return (
     <NewAlbumWrapper>
@@ -47,9 +47,10 @@ export default memo(function TYNewAlbum() {
             {[0, 1].map((item, index) => {
               return (
                 <div key={item} className="page">
-                  {newAlbums.slice(item * 5, (item + 1) * 5).map((itemX) => {
-                    return <AlbumCover key={itemX.id} info={itemX} />
-                  })}
+                  {newAlbums &&
+                    newAlbums.slice(item * 5, (item + 1) * 5).map((itemX) => {
+                      return <AlbumCover key={itemX.id} info={itemX} />
+                    })}
                 </div>
               )
             })}
@@ -62,4 +63,25 @@ export default memo(function TYNewAlbum() {
       </div>
     </NewAlbumWrapper>
   )
+}
+
+/**
+ * 映射redux全局state到组件props上
+ */
+const mapStateToProps = (state: any) => ({
+  // 热门推荐列表
+  newAlbums: state.recommend.newAlbums,
 })
+/**
+ * 映射dispatch到props上
+ */
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    // 获取推荐列表
+    getNewAlbumDispatch(limit: number) {
+      dispatch(actionTypes.getNewAlbum(limit))
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(TYNewAlbum))

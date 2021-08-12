@@ -2,15 +2,24 @@
  * @Author: 唐云 
  * @Date: 2021-02-20 23:11:07 
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-03-01 13:24:41
+ * @Last Modified time: 2021-08-12 14:55:12
  * 专辑封面组件
  */
 import React, { memo } from 'react'
 
 import { AlbumWrapper } from './style'
-import { getSizeImage } from '@/utils/format-utils'
+import { getSizeImage } from '../../utils/format-utils'
+import { INewAlbums } from '../../pages/discover/recommend/store/data.d'
+import { connect } from 'react-redux'
 
-export default memo(function AlbumCover(props) {
+interface IAlbumCoverProps {
+  size?: string
+  width?: string
+  bgp?: string
+  info: INewAlbums
+}
+
+const AlbumCover: React.FC<IAlbumCoverProps> = (props) => {
   /**
    * state and props
    */
@@ -30,4 +39,6 @@ export default memo(function AlbumCover(props) {
       </div>
     </AlbumWrapper>
   )
-})
+}
+
+export default connect()(memo(AlbumCover))
