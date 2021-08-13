@@ -1,15 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-const Discover = React.lazy(() => import('../pages/discover'))
-const Friend = React.lazy(() => import('../pages/friend'))
-const Mine = React.lazy(() => import('../pages/mine'))
-const Player = React.lazy(() => import('../pages/player'))
-const Recommend = React.lazy(() => import('../pages/discover/recommend'))
-const TopList = React.lazy(() => import('../pages/discover/top-list'))
-const DjRadio = React.lazy(() => import('../pages/discover/dj-radio'))
-const Artist = React.lazy(() => import('../pages/discover/artist'))
-
 const routes = [
   {
     path: '/',
@@ -18,7 +9,7 @@ const routes = [
   },
   {
     path: '/discover',
-    component: Discover,
+    component: React.lazy(() => import('../pages/discover')),
     routes: [
       {
         path: '/discover',
@@ -27,37 +18,33 @@ const routes = [
       },
       {
         path: '/discover/recommend',
-        component: Recommend,
+        component: React.lazy(() => import('../pages/discover/recommend')),
       },
       {
         path: '/discover/top-list',
-        component: TopList,
+        component: React.lazy(() => import('../pages/discover/top-list')),
       },
       {
         path: '/discover/dj-radio',
-        component: DjRadio,
-      },
-      {
-        path: '/discover/top-list',
-        component: TopList,
+        component: React.lazy(() => import('../pages/discover/dj-radio')),
       },
       {
         path: '/discover/artist',
-        component: Artist,
+        component: React.lazy(() => import('../pages/discover/artist')),
       },
     ],
   },
   {
     path: '/mine',
-    component: Mine,
+    component: React.lazy(() => import('../pages/mine')),
   },
   {
     path: '/player',
-    component: Player,
+    component: React.lazy(() => import('../pages/player')),
   },
   {
     path: '/friend',
-    component: Friend,
+    component: React.lazy(() => import('../pages/friend')),
   },
 ]
 
