@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 
 import TYHeader from '../src/components/Header/index'
 import TYFooter from '../src/components/Footer/index'
+import TYAppPlayBar from '../src/pages/player/app-player-bar'
 
 import routes from '../src/router'
 import { store } from '../src/store'
@@ -25,7 +26,7 @@ export default memo(function App() {
           {renderRoutes(routes)}
         </Suspense>
         <TYFooter />
-        {/* <TYAppPlayBar /> */}
+        <TYAppPlayBar />
         <BackTop />
       </HashRouter>
     </Provider>

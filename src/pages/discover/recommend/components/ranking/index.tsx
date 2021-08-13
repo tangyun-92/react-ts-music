@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 15:29:17
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 15:18:17
+ * @Last Modified time: 2021-08-13 13:40:57
  * 推荐-榜单组件
  */
 import React, { memo, useEffect } from 'react'
@@ -26,15 +26,6 @@ const TYRanking: React.FC<IRecommendProps> = (props: IRecommendProps) => {
    * redux hooks
    */
   const { getTopListDispatch, upRanking, newRanking, originRanking } = props
-  // const { upRanking, newRanking, originRanking } = useSelector(
-  //   (state) => ({
-  //     upRanking: state.getIn(['recommend', 'upRanking']),
-  //     newRanking: state.getIn(['recommend', 'newRanking']),
-  //     originRanking: state.getIn(['recommend', 'originRanking']),
-  //   }),
-  //   shallowEqual
-  // )
-  // const dispatch = useDispatch()
 
   /**
    * other hooks

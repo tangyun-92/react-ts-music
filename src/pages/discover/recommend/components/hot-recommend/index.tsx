@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 15:02:37
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 14:47:40
+ * @Last Modified time: 2021-08-13 14:06:48
  * 推荐-热门推荐组件
  */
 import React, { memo, useEffect } from 'react'
@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import { HotRecommendWrapper } from './style'
 import TYThemeHeaderRecommend from '../../../../../components/ThemeHeaderRecommend/index'
-import TYSongsCover from '../../../../../components/SongsCover'
+import TYSongsCover from '../../../../../components/SongsCover/index'
 import * as actionTypes from '../../store/actionCreators'
 import { IRecommendType } from '../../store/data.d'
 
@@ -40,7 +40,7 @@ const TYHotRecommend: React.FC<IRecommendProps> = (props: IRecommendProps) => {
       />
       <div className="recommend-list">
         {hotRecommendList &&
-          hotRecommendList.map((item: any) => {
+          hotRecommendList.map((item: IRecommendType) => {
             return <TYSongsCover key={item.id} list={item} />
           })}
       </div>

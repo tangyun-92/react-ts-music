@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 21:29:59
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 13:58:50
+ * @Last Modified time: 2021-08-13 14:17:45
  * 歌曲封面组件
  */
 import React, { memo } from 'react'
@@ -11,8 +11,24 @@ import { SongsCoverWrapper } from './style'
 import { getCount, getSizeImage } from '../../utils/format-utils'
 import { connect } from 'react-redux'
 import { IRecommendType } from '../../pages/discover/recommend/store/data.d'
+import * as actionTypes from '../../pages/player/store/actionCreators'
+import { IPlayListType } from '../../pages/player/store/data.d'
+
+const mapStateToProps = (state: any) => ({})
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    changePlayListActionDispatch(data: IPlayListType[]) {
+      dispatch(actionTypes.changePlayListAction(data))
+    },
+    getPlayListDetailToPlayListActionDispatch(id: number, way: string) {
+      dispatch(actionTypes.getPlayListDetailToPlayListAction(id, way))
+    },
+  }
+}
 
 interface ISongsCoverProps {
+  changePlayListActionDispatch: (data: IPlayListType[]) => void
+  getPlayListDetailToPlayListActionDispatch: (id: number, way: string) => void
   list: IRecommendType
   right?: string
   bottom?: string
@@ -22,14 +38,20 @@ const SongsCover: React.FC<ISongsCoverProps> = (props: ISongsCoverProps) => {
   /**
    * state and props
    */
-  const { list, right = '0px', bottom = '20px' } = props
+  const {
+    changePlayListActionDispatch,
+    getPlayListDetailToPlayListActionDispatch,
+    list,
+    right = '0px',
+    bottom = '20px',
+  } = props
 
   /**
    * other methods
    */
   const playMusic = (id: number) => {
-    // dispatch(changePlayListAction([]))
-    // dispatch(getPlayListDetailToPlayListAction(id))
+    changePlayListActionDispatch([])
+    getPlayListDetailToPlayListActionDispatch(id, 'have')
   }
 
   return (
@@ -55,4 +77,4 @@ const SongsCover: React.FC<ISongsCoverProps> = (props: ISongsCoverProps) => {
   )
 }
 
-export default connect()(memo(SongsCover))
+export default connect(mapStateToProps, mapDispatchToProps)(memo(SongsCover))

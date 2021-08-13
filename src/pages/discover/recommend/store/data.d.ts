@@ -33,6 +33,7 @@ export interface ITopList {
   coverImgUrl?: string
   name?: string
   tracks?: ITracks[]
+  id?: any
 }
 
 export interface IRecommendStateType {
