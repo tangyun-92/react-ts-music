@@ -27,7 +27,7 @@ export function getSizeImage(imgUrl: string | undefined, size: number) {
  * @param {*} time 需要格式的时间
  * @param {*} fmt 格式
  */
-export function formatDate(time: number, fmt: string) {
+export function formatDate(time: any, fmt: string) {
   let date = new Date(time)
 
   if (/(y+)/.test(fmt)) {

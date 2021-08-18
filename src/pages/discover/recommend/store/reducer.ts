@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { IRecommendStateType } from './data.d'
+import { IRecommendStateType } from './data'
 
 import * as actionTypes from './constants'
 
