@@ -7,34 +7,17 @@
  */
 import React, { memo } from 'react'
 
-import { connect } from 'react-redux'
+import { connect, useStore } from 'react-redux'
 
 import { TopRankingWrapper } from './style'
 import { getSizeImage } from '../../utils/format-utils'
 import { ITopList } from '../../pages/discover/recommend/store/data.d'
-import * as actionTypes from '../../pages/player/store/actionCreators'
 import { ICurrentSongType } from '../../pages/player/store/data.d'
+import UseAddPlayList from '../../hooks/useAddPlayList'
 
 const mapStateToProps = (state: any) => ({})
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    getSongDetailActionDispatch(id: number) {
-      dispatch(actionTypes.getSongDetailAction(id))
-    },
-    getSongToPlayListActionDispatch(id: number) {
-      dispatch(actionTypes.getSongToPlayListAction(id))
-    },
-    getPlayListDetailToPlayListActionDispatch(id: number) {
-      dispatch(actionTypes.getPlayListDetailToPlayListAction(id))
-    },
-  }
-}
-
 interface ITopRanking {
-  getSongDetailActionDispatch: (id: number) => void
-  getSongToPlayListActionDispatch: (id: number) => void
-  getPlayListDetailToPlayListActionDispatch: (id: number) => void
   info: ITopList
 }
 
@@ -43,28 +26,37 @@ const TopRanking: React.FC<ITopRanking> = (props: ITopRanking) => {
    * state and props
    */
   const {
-    getSongDetailActionDispatch,
-    getSongToPlayListActionDispatch,
-    getPlayListDetailToPlayListActionDispatch,
     info,
   } = props
   const { tracks = [] } = info
+  const store = useStore()
 
   /**
    * other methods
    */
   // 播放音乐
   const playMusic = (item: ICurrentSongType) => {
-    getSongDetailActionDispatch(item.id)
+    UseAddPlayList({
+      store,
+      id: item.id,
+    })
   }
 
   // 添加到播放列表
   const addToPlayList = (item: ICurrentSongType) => {
-    getSongToPlayListActionDispatch(item.id)
+    UseAddPlayList({
+      store,
+      id: item.id,
+      way: 'add'
+    })
   }
 
-  const playAllMusic = (id: number) => {
-    getPlayListDetailToPlayListActionDispatch(id)
+  // 将榜单中所有歌曲添加到列表并播放
+  const playAllMusic = () => {
+    UseAddPlayList({
+      store,
+      songs: info.tracks
+    })
   }
 
   return (
@@ -81,7 +73,7 @@ const TopRanking: React.FC<ITopRanking> = (props: ITopRanking) => {
           <div>
             <button
               className="btn play sprite_02"
-              onClick={(e) => playAllMusic(info.id)}
+              onClick={(e) => playAllMusic()}
             ></button>
             <button className="btn favor sprite_02"></button>
           </div>
@@ -118,4 +110,4 @@ const TopRanking: React.FC<ITopRanking> = (props: ITopRanking) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(TopRanking))
+export default connect(mapStateToProps)(memo(TopRanking))

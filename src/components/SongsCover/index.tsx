@@ -9,26 +9,14 @@ import React, { memo } from 'react'
 
 import { SongsCoverWrapper } from './style'
 import { getCount, getSizeImage } from '../../utils/format-utils'
-import { connect } from 'react-redux'
+import { connect, useStore } from 'react-redux'
 import { IRecommendType } from '../../pages/discover/recommend/store/data.d'
-import * as actionTypes from '../../pages/player/store/actionCreators'
-import { IPlayListType } from '../../pages/player/store/data.d'
+import UseAddPlayList from 'src/hooks/useAddPlayList'
+import { getPlayListDetail } from 'src/api/player'
 
 const mapStateToProps = (state: any) => ({})
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    changePlayListActionDispatch(data: IPlayListType[]) {
-      dispatch(actionTypes.changePlayListAction(data))
-    },
-    getPlayListDetailToPlayListActionDispatch(id: number, way: string) {
-      dispatch(actionTypes.getPlayListDetailToPlayListAction(id, way))
-    },
-  }
-}
 
 interface ISongsCoverProps {
-  changePlayListActionDispatch: (data: IPlayListType[]) => void
-  getPlayListDetailToPlayListActionDispatch: (id: number, way: string) => void
   list: IRecommendType
   right?: string
   bottom?: string
@@ -39,19 +27,23 @@ const SongsCover: React.FC<ISongsCoverProps> = (props: ISongsCoverProps) => {
    * state and props
    */
   const {
-    changePlayListActionDispatch,
-    getPlayListDetailToPlayListActionDispatch,
     list,
     right = '0px',
     bottom = '20px',
   } = props
+  const store = useStore()
 
   /**
    * other methods
    */
   const playMusic = (id: number) => {
-    changePlayListActionDispatch([])
-    getPlayListDetailToPlayListActionDispatch(id, 'have')
+    getPlayListDetail(id).then((res: any) => {
+      const trackIds = res.playlist.trackIds
+      UseAddPlayList({
+        store,
+        songs: trackIds,
+      })
+    })
   }
 
   return (
@@ -77,4 +69,4 @@ const SongsCover: React.FC<ISongsCoverProps> = (props: ISongsCoverProps) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(SongsCover))
+export default connect(mapStateToProps)(memo(SongsCover))

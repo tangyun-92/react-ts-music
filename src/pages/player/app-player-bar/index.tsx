@@ -2,12 +2,12 @@
  * @Author: 唐云
  * @Date: 2021-02-21 14:34:07
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 11:07:34
+ * @Last Modified time: 2021-08-18 14:12:31
  * 播放器组件
  */
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
-import { connect } from 'react-redux'
+import { connect, useStore } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Slider, message } from 'antd'
 
@@ -24,6 +24,7 @@ import {
   ILyricListType,
   IPlayListType,
 } from '../store/data.d'
+import UseChangeCurrentSong from 'src/hooks/useChangeCurrentSong'
 
 /**
  * 映射redux全局state到组件props上
@@ -41,17 +42,11 @@ const mapStateToProps = (state: any) => ({
  */
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getSongDetailDispatch() {
-      dispatch(actionTypes.getSongDetailAction())
-    },
     changeCurrentLyricIndexDispatch(index: number) {
       dispatch(actionTypes.changeCurrentLyricIndexAction(index))
     },
     changeSequenceActionDispatch(index: number) {
       dispatch(actionTypes.changeSequenceAction(index))
-    },
-    changeCurrentSongDispatch(tag: number) {
-      dispatch(actionTypes.changeCurrentSong(tag))
     },
     changeIsPlayListDispatch(tag: boolean) {
       dispatch(actionTypes.changeIsPlayList(tag))
@@ -60,10 +55,8 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 interface IAppPlayBarProps {
-  getSongDetailDispatch: () => void
   changeCurrentLyricIndexDispatch: (index: number) => void
   changeSequenceActionDispatch: (index: number) => void
-  changeCurrentSongDispatch: (tag: number) => void
   changeIsPlayListDispatch: (tag: boolean) => void
   currentSong: ICurrentSongType
   sequence: number
@@ -78,10 +71,8 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
    * props and state
    */
   let {
-    getSongDetailDispatch,
     changeCurrentLyricIndexDispatch,
     changeSequenceActionDispatch,
-    changeCurrentSongDispatch,
     changeIsPlayListDispatch,
     currentSong,
     sequence,
@@ -94,18 +85,15 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
   const [progress, setProgress] = useState(0) // 实时进度条（播放中）
   const [isChanging, setIsChanging] = useState(false) // 是否正在改变进度条
   const [isPlaying, setIsPlaying] = useState(false) // 播放状态
+  const store = useStore()
 
   /**
    *  other hooks
    */
   const audioRef: any = useRef()
   useEffect(() => {
-    // dispatch(getSongDetailAction())
-    getSongDetailDispatch()
-  }, [getSongDetailDispatch])
-  useEffect(() => {
     // 歌曲路径
-    audioRef.current.src = getPlaySong(currentSong.id)
+    audioRef.current.src = getPlaySong(currentSong && currentSong.id)
     // 监听歌曲改变执行播放
     audioRef.current
       .play()
@@ -157,13 +145,6 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
     const finalIndex = i - 1
     if (finalIndex !== currentLyricIndex) {
       changeCurrentLyricIndexDispatch(finalIndex)
-      // const content = lyricList[finalIndex] && lyricList[finalIndex].content
-      // message.open({
-      //   content: content,
-      //   key: 'lyric',
-      //   duration: 0,
-      //   className: 'lyric-message',
-      // })
     }
   }
 
@@ -204,7 +185,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
 
   // 切歌
   const changeMusic = (tag: number) => {
-    changeCurrentSongDispatch(tag)
+    UseChangeCurrentSong(store, tag)
   }
 
   // 歌曲播放完毕时
@@ -214,7 +195,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
       audioRef.current.currentTime = 0
       audioRef.current.play()
     } else {
-      changeCurrentSongDispatch(1)
+      UseChangeCurrentSong(store, 1)
     }
   }
 
@@ -248,7 +229,9 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
           </div>
           <div className="info">
             <div className="song">
-              <span className="song-name">{currentSong.name}</span>
+              <span className="song-name">
+                {currentSong && currentSong.name}
+              </span>
               <a href="/todo" className="singer-name">
                 {singerName}
               </a>

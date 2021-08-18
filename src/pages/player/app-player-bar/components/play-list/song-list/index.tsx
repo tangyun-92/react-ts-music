@@ -6,7 +6,7 @@
  * 播放列表-歌曲列表组件
  */
 import React, { memo } from 'react'
-import { connect } from 'react-redux'
+import { connect, useStore } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -14,6 +14,7 @@ import { SongsWrapper, NoSongsWrapper, HaveSongsWrapper } from './style'
 import { formatMinuteSecond } from '../../../../../../utils/format-utils'
 import * as actionTypes from '../../../../store/actionCreators'
 import { IPlayListType, ICurrentSongType } from '../../../../store/data.d'
+import UseAddPlayList from 'src/hooks/useAddPlayList'
 
 /**
  * 映射redux全局state到组件props上
@@ -31,9 +32,6 @@ const mapDispatchToProps = (dispatch: any) => {
     changeIsPlayListDispatch(flag: boolean) {
       dispatch(actionTypes.changeIsPlayList(flag))
     },
-    getSongDetailDispatch(id: number) {
-      dispatch(actionTypes.getSongDetailAction(id))
-    },
     changePlayListActionDispatch(data: IPlayListType[]) {
       dispatch(actionTypes.changePlayListAction(data))
     },
@@ -45,7 +43,6 @@ const mapDispatchToProps = (dispatch: any) => {
 
 interface TPlayListSongsProps {
   changeIsPlayListDispatch: (flag: boolean) => void
-  getSongDetailDispatch: (id: number) => void
   changePlayListActionDispatch: (data: IPlayListType[]) => void
   changeSongDetailActionDispatch: (data: ICurrentSongType) => void
   playList: IPlayListType[]
@@ -58,13 +55,13 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
 ) => {
   const {
     changeIsPlayListDispatch,
-    getSongDetailDispatch,
     changePlayListActionDispatch,
     changeSongDetailActionDispatch,
     playList,
     currentSongIndex,
     currentSong,
   } = props
+  const store = useStore()
 
   /**
    * other methods
@@ -76,7 +73,10 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
 
   // 播放列表中的音乐
   const playMusic = (item: IPlayListType) => {
-    getSongDetailDispatch(item.id)
+    UseAddPlayList({
+      store,
+      id: item.id
+    })
   }
 
   // 删除列表中的某首歌曲
@@ -90,7 +90,10 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
         if (item.id !== PlayingId) {
           newPlayList.splice(index, 1)
           changePlayListActionDispatch(newPlayList)
-          getSongDetailDispatch(PlayingId)
+          UseAddPlayList({
+            store,
+            id: PlayingId
+          })
         } else {
           // 如果删除正在播放的歌曲
           newPlayList.splice(index, 1)
