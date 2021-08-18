@@ -2,11 +2,11 @@
  * @Author: 唐云
  * @Date: 2021-02-23 14:12:22
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 13:03:59
+ * @Last Modified time: 2021-08-18 15:43:47
  * 播放列表-歌曲列表组件
  */
 import React, { memo } from 'react'
-import { connect, useStore } from 'react-redux'
+import { connect, useDispatch, useStore } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -24,27 +24,7 @@ const mapStateToProps = (state: any) => ({
   currentSongIndex: state.player.currentSongIndex,
   currentSong: state.player.currentSong,
 })
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    changeIsPlayListDispatch(flag: boolean) {
-      dispatch(actionTypes.changeIsPlayList(flag))
-    },
-    changePlayListActionDispatch(data: IPlayListType[]) {
-      dispatch(actionTypes.changePlayListAction(data))
-    },
-    changeSongDetailActionDispatch(data: ICurrentSongType) {
-      dispatch(actionTypes.changeSongDetailAction(data))
-    },
-  }
-}
-
 interface TPlayListSongsProps {
-  changeIsPlayListDispatch: (flag: boolean) => void
-  changePlayListActionDispatch: (data: IPlayListType[]) => void
-  changeSongDetailActionDispatch: (data: ICurrentSongType) => void
   playList: IPlayListType[]
   currentSongIndex: number
   currentSong: ICurrentSongType
@@ -54,21 +34,19 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
   props: TPlayListSongsProps
 ) => {
   const {
-    changeIsPlayListDispatch,
-    changePlayListActionDispatch,
-    changeSongDetailActionDispatch,
     playList,
     currentSongIndex,
     currentSong,
   } = props
   const store = useStore()
+  const dispatch = useDispatch()
 
   /**
    * other methods
    */
   // 隐藏播放列表
   const hidePlayList = () => {
-    changeIsPlayListDispatch(false)
+    dispatch(actionTypes.changeIsPlayList(false))
   }
 
   // 播放列表中的音乐
@@ -89,7 +67,7 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
       if (item.id === id) {
         if (item.id !== PlayingId) {
           newPlayList.splice(index, 1)
-          changePlayListActionDispatch(newPlayList)
+          dispatch(actionTypes.changePlayListAction(newPlayList))
           UseAddPlayList({
             store,
             id: PlayingId
@@ -97,7 +75,7 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
         } else {
           // 如果删除正在播放的歌曲
           newPlayList.splice(index, 1)
-          changePlayListActionDispatch(newPlayList)
+          dispatch(actionTypes.changePlayListAction(newPlayList))
           if (newPlayList.length !== 0) {
             if (newPlayList.length === index) {
               // 如果是列表的最后一首自动播放上一首
@@ -108,7 +86,7 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
             }
           } else {
             // 如果是最后一首，清空播放中的歌曲
-            changeSongDetailActionDispatch({})
+            dispatch(actionTypes.changeSongDetailAction({}))
           }
         }
       }
@@ -174,4 +152,4 @@ const PlayListSongs: React.FC<TPlayListSongsProps> = (
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(PlayListSongs))
+export default connect(mapStateToProps)(memo(PlayListSongs))

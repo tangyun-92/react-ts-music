@@ -2,11 +2,11 @@
  * @Author: 唐云
  * @Date: 2021-02-23 09:21:48
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 14:17:20
+ * @Last Modified time: 2021-08-18 16:01:04
  * 播放列表
  */
 import React, { memo, useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 
 import { PlayListWrapper } from './style'
 import PlayListHeader from './list-header'
@@ -14,24 +14,8 @@ import PlayListSongs from './song-list'
 import PlayListLyric from './list-lyric'
 import * as actionTypes from '../../../store/actionCreators'
 
-const mapStateToProps = (state: any) => ({})
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    changeIsPlayListDispatch(tag: boolean) {
-      dispatch(actionTypes.changeIsPlayList(tag))
-    },
-  }
-}
-
-interface IPlayListProps {
-  changeIsPlayListDispatch: (tag: boolean) => void
-}
-
-const PlayList: React.FC<IPlayListProps> = (props: IPlayListProps) => {
-  const { changeIsPlayListDispatch } = props
-  /**
-   * redux hooks
-   */
+const PlayList: React.FC<{}> = () => {
+  const dispatch = useDispatch()
 
   /**
    * other hooks
@@ -42,10 +26,10 @@ const PlayList: React.FC<IPlayListProps> = (props: IPlayListProps) => {
     const currentClass = maskRef.current && maskRef.current.className
     document.body.addEventListener('click', (e: any) => {
       if (e.target.className === currentClass) {
-        changeIsPlayListDispatch(false)
+        dispatch(actionTypes.changeIsPlayList(false))
       }
     })
-  }, [changeIsPlayListDispatch])
+  }, [dispatch])
 
   return (
     <PlayListWrapper>
@@ -67,4 +51,4 @@ const PlayList: React.FC<IPlayListProps> = (props: IPlayListProps) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(PlayList))
+export default connect()(memo(PlayList))

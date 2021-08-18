@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-21 13:49:45
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 14:54:43
+ * @Last Modified time: 2021-08-18 15:32:19
  * 榜单组件
  */
 import React, { memo } from 'react'
@@ -14,8 +14,6 @@ import { getSizeImage } from '../../utils/format-utils'
 import { ITopList } from '../../pages/discover/recommend/store/data.d'
 import { ICurrentSongType } from '../../pages/player/store/data.d'
 import UseAddPlayList from '../../hooks/useAddPlayList'
-
-const mapStateToProps = (state: any) => ({})
 
 interface ITopRanking {
   info: ITopList
@@ -110,4 +108,4 @@ const TopRanking: React.FC<ITopRanking> = (props: ITopRanking) => {
   )
 }
 
-export default connect(mapStateToProps)(memo(TopRanking))
+export default connect()(memo(TopRanking))

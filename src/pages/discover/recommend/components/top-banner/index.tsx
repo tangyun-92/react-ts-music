@@ -2,27 +2,26 @@
  * @Author: 唐云 
  * @Date: 2021-02-20 15:02:12 
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 14:38:17
+ * @Last Modified time: 2021-08-18 15:20:55
  * 推荐-banner组件
  */
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 
 import { Carousel } from 'antd'
 import { BannerWrapper, BannerLeft, BannerRight, BannerControl } from './style'
-import * as actionTypes from '../../store/actionCreators'
 import { ITopBannerType } from '../../store/data.d'
+import { getTopBanner } from '../../store/actionCreators'
 
 interface ITopBanner {
   topBanners: ITopBannerType[]
-  getTopBannerDispatch: () => void
 }
 
 const TYTopBanner: React.FC<ITopBanner> = (props: ITopBanner) => {
   /**
    * state and props
    */
-  const { getTopBannerDispatch, topBanners } = props
+  const { topBanners } = props
   const [currentIndex, setCurrentIndex] = useState(0)
 
   /**
@@ -30,9 +29,10 @@ const TYTopBanner: React.FC<ITopBanner> = (props: ITopBanner) => {
    */
   const bannerRef: any = useRef()
 
+  const dispatch = useDispatch()
   useEffect(() => {
-    getTopBannerDispatch()
-  }, [getTopBannerDispatch])
+    dispatch(getTopBanner())
+  }, [dispatch])
 
   /**
    * other methods
@@ -93,16 +93,5 @@ const mapStateToProps = (state: any) => ({
   // 热门推荐列表
   topBanners: state.recommend.topBanners,
 })
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    // 获取推荐列表
-    getTopBannerDispatch() {
-      dispatch(actionTypes.getTopBanner())
-    },
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(TYTopBanner))
+export default connect(mapStateToProps)(memo(TYTopBanner))

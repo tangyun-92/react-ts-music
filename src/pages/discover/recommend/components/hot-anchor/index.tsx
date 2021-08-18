@@ -2,19 +2,25 @@
  * @Author: 唐云
  * @Date: 2021-02-24 21:44:04
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-12 16:10:43
+ * @Last Modified time: 2021-08-18 15:38:39
  * 热门主播
  */
 import React, { memo, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 
 import { HotAnchorWrapper } from './style'
 import { getSizeImage } from '../../../../../utils/format-utils'
 import * as actionTypes from '../../../dj-radio/store/actionCreators'
 import { IHotAnchorsType } from '../../../dj-radio/store/data.d'
 
+/**
+ * 映射redux全局state到组件props上
+ */
+const mapStateToProps = (state: any) => ({
+  hotAnchors: state.anchor.hotAnchors,
+})
+
 interface IHotAnchorProps {
-  getTopAnchorsDispatch: (limit: number) => void
   hotAnchors: IHotAnchorsType[]
 }
 
@@ -22,14 +28,15 @@ const HotAnchor: React.FC<IHotAnchorProps> = (props: IHotAnchorProps) => {
   /**
    * redux hooks
    */
-  const { getTopAnchorsDispatch, hotAnchors } = props
+  const { hotAnchors } = props
 
   /**
    * other hooks
    */
+  const dispatch = useDispatch()
   useEffect(() => {
-    getTopAnchorsDispatch(5)
-  }, [getTopAnchorsDispatch])
+    dispatch(actionTypes.getTopAnchorsAction(5))
+  }, [dispatch])
 
   return (
     <HotAnchorWrapper>
@@ -59,21 +66,4 @@ const HotAnchor: React.FC<IHotAnchorProps> = (props: IHotAnchorProps) => {
   )
 }
 
-/**
- * 映射redux全局state到组件props上
- */
-const mapStateToProps = (state: any) => ({
-  hotAnchors: state.anchor.hotAnchors,
-})
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    getTopAnchorsDispatch(limit: number) {
-      dispatch(actionTypes.getTopAnchorsAction(limit))
-    },
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(memo(HotAnchor))
+export default connect(mapStateToProps)(memo(HotAnchor))

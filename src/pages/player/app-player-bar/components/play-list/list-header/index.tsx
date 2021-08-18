@@ -2,19 +2,16 @@
  * @Author: 唐云
  * @Date: 2021-02-23 11:05:54
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 13:20:49
+ * @Last Modified time: 2021-08-18 15:40:59
  * 播放列表头部组件
  */
 import React, { memo } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Popconfirm, message } from 'antd'
 
 import { ListHeaderWrapper } from './style'
 import * as actionTypes from '../../../../store/actionCreators'
-import {
-  ICurrentSongType,
-  IPlayListType,
-} from '../../../../store/data.d'
+import { ICurrentSongType, IPlayListType } from '../../../../store/data.d'
 
 /**
  * 映射redux全局state到组件props上
@@ -23,23 +20,8 @@ const mapStateToProps = (state: any) => ({
   currentSong: state.player.currentSong,
   playList: state.player.playList,
 })
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    changePlayListActionDispatch(data: IPlayListType[]) {
-      dispatch(actionTypes.changePlayListAction(data))
-    },
-    changeIsPlayListDispatch(tag: boolean) {
-      dispatch(actionTypes.changeIsPlayList(tag))
-    },
-  }
-}
 
 interface IPlayListHeaderProps {
-  changePlayListActionDispatch: (data: IPlayListType[]) => void
-  changeIsPlayListDispatch: (tag: boolean) => void
   currentSong: ICurrentSongType
   playList: IPlayListType[]
 }
@@ -47,24 +29,20 @@ interface IPlayListHeaderProps {
 const PlayListHeader: React.FC<IPlayListHeaderProps> = (
   props: IPlayListHeaderProps
 ) => {
-  const {
-    changePlayListActionDispatch,
-    changeIsPlayListDispatch,
-    playList,
-    currentSong,
-  } = props
+  const { playList, currentSong } = props
+  const dispatch = useDispatch()
 
   /**
    * other methods
    */
   // 关闭播放列表
   const closeList = () => {
-    changeIsPlayListDispatch(false)
+    dispatch(actionTypes.changeIsPlayList(false))
   }
 
   // 清空播放列表
   const clearPlayList = () => {
-    changePlayListActionDispatch([])
+    dispatch(actionTypes.changePlayListAction([]))
     message.success('清除成功')
   }
 
@@ -100,7 +78,4 @@ const PlayListHeader: React.FC<IPlayListHeaderProps> = (
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(memo(PlayListHeader))
+export default connect(mapStateToProps)(memo(PlayListHeader))

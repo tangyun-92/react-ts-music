@@ -2,20 +2,26 @@
  * @Author: 唐云
  * @Date: 2021-02-24 21:44:31
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 13:41:13
+ * @Last Modified time: 2021-08-18 15:36:47
  * 入驻歌手
  */
 import React, { memo, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 
 import { InSingerWrapper } from './style'
 import { getSizeImage } from '../../../../../utils/format-utils'
-import * as actionTypes from '../../../artist/store/actionCreators'
+import { getHotArtistAction } from '../../../artist/store/actionCreators'
 import { IHotArtistsType } from '../../../artist/store/data.d'
 
+/**
+ * 映射redux全局state到组件props上
+ */
+const mapStateToProps = (state: any) => ({
+  hotArtists: state.artist.hotArtists,
+})
+
 interface IInSingerProps {
-  getHotArtistDispatch: (limit: number) => void
   hotArtists: IHotArtistsType[]
 }
 
@@ -23,14 +29,15 @@ const InSinger: React.FC<IInSingerProps> = (props: IInSingerProps) => {
   /**
    * redux hooks
    */
-  const { getHotArtistDispatch, hotArtists } = props
+  const { hotArtists } = props
 
   /**
    * other hooks
    */
+  const dispatch = useDispatch()
   useEffect(() => {
-    getHotArtistDispatch(5)
-  }, [getHotArtistDispatch])
+    dispatch(getHotArtistAction(5))
+  }, [dispatch])
 
   return (
     <InSingerWrapper>
@@ -63,21 +70,4 @@ const InSinger: React.FC<IInSingerProps> = (props: IInSingerProps) => {
   )
 }
 
-/**
- * 映射redux全局state到组件props上
- */
-const mapStateToProps = (state: any) => ({
-  hotArtists: state.artist.hotArtists,
-})
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    getHotArtistDispatch(limit: number) {
-      dispatch(actionTypes.getHotArtistAction(limit))
-    },
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(memo(InSinger))
+export default connect(mapStateToProps)(memo(InSinger))

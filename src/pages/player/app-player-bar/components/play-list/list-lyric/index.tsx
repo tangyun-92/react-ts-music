@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-23 21:11:38
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 13:15:34
+ * @Last Modified time: 2021-08-18 15:41:33
  * 歌词列表组件
  */
 import React, { memo, useEffect, useRef, useState } from 'react'
@@ -21,9 +21,6 @@ const mapStateToProps = (state: any) => ({
   lyricList: state.player.lyricList,
   currentLyricIndex: state.player.currentLyricIndex,
 })
-/**
- * 映射dispatch到props上
- */
 
 interface IAppPlayBarProps {
   lyricList: ILyricListType[]

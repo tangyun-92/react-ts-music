@@ -2,12 +2,12 @@
  * @Author: 唐云
  * @Date: 2021-02-21 14:34:07
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-18 14:12:31
+ * @Last Modified time: 2021-08-18 15:47:37
  * 播放器组件
  */
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
-import { connect, useStore } from 'react-redux'
+import { connect, useDispatch, useStore } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Slider, message } from 'antd'
 
@@ -37,27 +37,8 @@ const mapStateToProps = (state: any) => ({
   isPlayList: state.player.isPlayList,
   playList: state.player.playList,
 })
-/**
- * 映射dispatch到props上
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    changeCurrentLyricIndexDispatch(index: number) {
-      dispatch(actionTypes.changeCurrentLyricIndexAction(index))
-    },
-    changeSequenceActionDispatch(index: number) {
-      dispatch(actionTypes.changeSequenceAction(index))
-    },
-    changeIsPlayListDispatch(tag: boolean) {
-      dispatch(actionTypes.changeIsPlayList(tag))
-    },
-  }
-}
 
 interface IAppPlayBarProps {
-  changeCurrentLyricIndexDispatch: (index: number) => void
-  changeSequenceActionDispatch: (index: number) => void
-  changeIsPlayListDispatch: (tag: boolean) => void
   currentSong: ICurrentSongType
   sequence: number
   lyricList: ILyricListType[]
@@ -71,9 +52,6 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
    * props and state
    */
   let {
-    changeCurrentLyricIndexDispatch,
-    changeSequenceActionDispatch,
-    changeIsPlayListDispatch,
     currentSong,
     sequence,
     lyricList,
@@ -86,6 +64,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
   const [isChanging, setIsChanging] = useState(false) // 是否正在改变进度条
   const [isPlaying, setIsPlaying] = useState(false) // 播放状态
   const store = useStore()
+  const dispatch = useDispatch()
 
   /**
    *  other hooks
@@ -144,7 +123,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
     }
     const finalIndex = i - 1
     if (finalIndex !== currentLyricIndex) {
-      changeCurrentLyricIndexDispatch(finalIndex)
+      dispatch(actionTypes.changeCurrentLyricIndexAction(finalIndex))
     }
   }
 
@@ -180,7 +159,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
     if (currentSequence > 2) {
       currentSequence = 0
     }
-    changeSequenceActionDispatch(currentSequence)
+    dispatch(actionTypes.changeSequenceAction(currentSequence))
   }
 
   // 切歌
@@ -201,7 +180,7 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
 
   const handlePlayList = () => {
     isPlayList = !isPlayList
-    changeIsPlayListDispatch(isPlayList)
+    dispatch(actionTypes.changeIsPlayList(isPlayList))
   }
 
   return (
@@ -285,4 +264,4 @@ const AppPlayBar: React.FC<IAppPlayBarProps> = (props: IAppPlayBarProps) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(memo(AppPlayBar))
+export default connect(mapStateToProps)(memo(AppPlayBar))

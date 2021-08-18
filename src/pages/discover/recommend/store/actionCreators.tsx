@@ -59,7 +59,7 @@ export const getRecommend = (limit: number) => {
 export const getNewAlbum = (limit: number) => {
   return (dispatch: any) => {
     getNewAlbums(limit).then((res: any) => {
-      dispatch(changeNewAlbumAction(res.albums))
+      dispatch(changeNewAlbumAction(res.weekData.slice(0, 10)))
     })
   }
 }
@@ -68,13 +68,13 @@ export const getTopListAction = (idx: number) => {
   return (dispatch: any) => {
     getTopList(idx).then((res: any) => {
       switch (idx) {
-        case 3:
+        case 19723756:
           dispatch(changeUpRankingAction(res.playlist))
           break
-        case 0:
+        case 3779629:
           dispatch(changeNewRankingAction(res.playlist))
           break
-        case 2:
+        case 2884035:
           dispatch(changeOriginRankingAction(res.playlist))
           break
         default:
