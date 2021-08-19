@@ -2,7 +2,7 @@
  * @Author: 唐云
  * @Date: 2021-02-20 21:29:59
  * @Last Modified by: 唐云
- * @Last Modified time: 2021-08-13 14:17:45
+ * @Last Modified time: 2021-08-19 10:26:38
  * 歌曲封面组件
  */
 import React, { memo } from 'react'
@@ -49,7 +49,7 @@ const SongsCover: React.FC<ISongsCoverProps> = (props: ISongsCoverProps) => {
   return (
     <SongsCoverWrapper right={right} bottom={bottom}>
       <div className="cover-top">
-        <img src={getSizeImage(list.picUrl, 140)} alt="" />
+        <img src={getSizeImage(list.picUrl || list.coverImgUrl, 140)} alt="" />
         <div className="cover sprite_cover">
           <div className="info sprite_cover">
             <span>

@@ -25,6 +25,10 @@ const routes = [
         component: React.lazy(() => import('../pages/discover/top-list')),
       },
       {
+        path: '/discover/play-list',
+        component: React.lazy(() => import('../pages/discover/play-list')),
+      },
+      {
         path: '/discover/dj-radio',
         component: React.lazy(() => import('../pages/discover/dj-radio')),
       },

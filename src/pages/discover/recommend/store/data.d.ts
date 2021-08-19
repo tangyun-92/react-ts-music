@@ -6,6 +6,7 @@ export interface IRecommendType {
   id: number
   name: string
   picUrl: string
+  coverImgUrl?: string
   playCount: number
   trackCount: number
   trackNumberUpdateTime: number
